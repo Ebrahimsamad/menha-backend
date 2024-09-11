@@ -1,0 +1,22 @@
+{
+  "name": "menha-backend",
+  "version": "1.0.0",
+  "description": "API Menha ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ebrahimsamad/menha-backend.git"
+  },
+  "author": "fatma && hesham && hossam && amr && ebrahim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ebrahimsamad/menha-backend/issues"
+  },
+  "homepage": "https://github.com/Ebrahimsamad/menha-backend#readme",
+  "dependencies": {
+    "express": "^4.20.0"
+  }
+}
