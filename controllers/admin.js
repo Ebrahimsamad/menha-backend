@@ -25,3 +25,30 @@ exports.getAllAdmin = async (req, res, next) => {
     next(new CustomError(error.message, 500));
   }
 };
+
+exports.editAdmin = async (req, res, next) => {
+  try {
+    const body = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, body, {
+      new: true,
+    });
+    if (!user) {
+      return next(new CustomError("Admin not found.", 404));
+    }
+
+    res.status(200).send({ message: "Updated successfully", user });
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
+exports.deleteAdmin = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return next(new CustomError("Admin not found.", 404));
+    }
+    res.status(200).send({ message: "Deleted successfully", user });
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
