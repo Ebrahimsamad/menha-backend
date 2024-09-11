@@ -41,6 +41,7 @@ exports.editAdmin = async (req, res, next) => {
     next(new CustomError("Internal server error.", 500));
   }
 };
+
 exports.deleteAdmin = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
