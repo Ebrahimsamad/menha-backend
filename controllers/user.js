@@ -1,6 +1,54 @@
+const jwtSign = util.promisify(jwt.sign);
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const CustomError = require("../utils/customError");
+const jwt = require('jsonwebtoken');
+
+
+exports.signup = async (req, res, next) => {
+  const { userName, email, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return next(new CustomError("Email is already used.", 409));
+    }
+
+    const user = new User({ userName, email, password ,image:req.body.image });
+    await user.save();
+
+    res.status(201).send({ message: "User created", user });
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
+exports.login = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(new CustomError("Invalid email or password", 401));
+    }
+    const isMatched = await bcrypt.compare(password, user.password);
+    if (isMatched) {
+      const token = await jwtSign(
+        { userId: user._id },
+        process.env.JWT_SECRET_ACCESS_TOKEN,
+        {
+          expiresIn: "30d",
+        }
+      );
+
+      res.status(200).send({ message: "User logged in", token, user });
+    } else {
+      return next(new CustomError("Invalid email or password", 401));
+    }
+  } catch (error) {
+    console.log(error);
+    next(new CustomError("Internal server error", 500));
+  }
+};
 
 
 exports.updateProfileUser = async (req, res, next) => {
