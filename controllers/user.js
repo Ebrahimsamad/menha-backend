@@ -1,8 +1,9 @@
+const util = require("util");
+const jwt = require('jsonwebtoken');
 const jwtSign = util.promisify(jwt.sign);
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const CustomError = require("../utils/customError");
-const jwt = require('jsonwebtoken');
 const transporter = require("../utils/nodemialer");
 const crypto = require("crypto");
 
@@ -64,7 +65,7 @@ exports.updateProfileUser = async (req, res, next) => {
         return next(new CustomError("User not found.", 404));
       }
   
-      res.status(200).send({ message: "Profile updated successfully", user });/create
+      res.status(200).send({ message: "Profile updated successfully", user });
     } catch (error) {
       next(new CustomError("Internal server error.", 500));
     }

@@ -3,9 +3,9 @@ const router = express.Router();
 
 const { creatAdmin, editAdmin, deleteAdmin, getAllAdmin } = require("../controllers/admin");
 
-const isAdminCheck = require("../middlewares/adminRoleCheck");
-const auth = require("../middlewares/auth");
-const validation = require("../middlewares/JoiValidation");
+const isAdminCheck = require("../middleware/adminRoleCheck");
+const auth = require("../middleware/auth");
+const validation = require("../middleware/JoiValidation");
 
 
 const { createAdminValidation, updateAdminValidation } = require("../utils/validation/admin");

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const upload = multer();
-const singleImageUpload = require("../middlewares/uploadSingleImage");
+const singleImageUpload = require("../middleware/uploadSingleImage");
 const {
     createUser,
     loginUser,
@@ -11,7 +11,7 @@ const {
     forgetPasswordUser,
     resetPasswordUser,
 } = require("../utils/validation/user");
-const validation = require("../middlewares/JoiValidation");
+const validation = require("../middleware/JoiValidation");
 const {
     signup,
     login,
@@ -20,7 +20,7 @@ const {
     forgetPassword,
     resetPassword,
 } = require("../controllers/user");
-const auth = require("../middlewares/auth");
+const auth = require("../middleware/auth");
 
 router.post("/login", validation(loginUser), login);
 router.post(

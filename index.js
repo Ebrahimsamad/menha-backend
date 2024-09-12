@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 var cors = require("cors");
-const logsMiddlewares = require("./middlewares/winstonLogs");
+const logsMiddlewares = require("./middleware/winstonLogs");
 const logsFunction = require("./utils/winstonLogs");
 const CustomError = require("./utils/customError");
 const userRoutes = require("./routes/user");
