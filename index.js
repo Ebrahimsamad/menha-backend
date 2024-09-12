@@ -80,3 +80,5 @@ mongoose
     console.error("Database connection error:", error);
     process.exit(1);
   });
+
+module.exports = app();
