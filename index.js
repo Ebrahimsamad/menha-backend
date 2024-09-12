@@ -8,6 +8,7 @@ const CustomError = require("./utils/customError");
 const userRoutes = require("./routes/user");
 const languageRoutes = require("./routes/languge");
 const fieldOfStudy = require("./routes/fieldOfStudy");
+const courseType = require("./routes/courseType");
 const User = require("./models/user");
 const adminRoutes = require("./routes/admin");
 
@@ -23,6 +24,7 @@ app.use("/admin", adminRoutes);
 app.use(userRoutes);
 app.use("/languages",languageRoutes);
 app.use("/fieldOfStudy",fieldOfStudy);
+app.use("/courseType",courseType);
 
 
 app.use((req, res, next) => {
