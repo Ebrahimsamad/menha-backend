@@ -5,10 +5,9 @@ const {
   getAllLanguages,
   deleteLanguageById
 } = require("../controllers/language");
-const checkLanguageExists = require("../middleware/checkLanguageExists");
 
 
-router.post("/", checkLanguageExists, createLanguage);
+router.post("/", createLanguage);
 
 
 router.get("/", getAllLanguages);
