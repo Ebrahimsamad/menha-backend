@@ -6,6 +6,7 @@ const logsMiddlewares = require("./middleware/winstonLogs");
 const logsFunction = require("./utils/winstonLogs");
 const CustomError = require("./utils/customError");
 const userRoutes = require("./routes/user");
+const languageRoutes = require("./routes/languge");
 const User = require("./models/user");
 const adminRoutes = require("./routes/admin");
 
@@ -13,14 +14,15 @@ const PORT = 3001;
 const app = express();
 app.use(express.json());
 app.use(cors());
-//logs any requests
+
 app.use(logsMiddlewares);
 
-//router routes
+
 app.use("/admin", adminRoutes);
 app.use(userRoutes);
+app.use("/languages",languageRoutes);
 
-//before error middleware
+
 app.use((req, res, next) => {
   logsFunction.error(
     `${req.method} ${
