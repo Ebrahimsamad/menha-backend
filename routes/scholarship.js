@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const {createScholarship,editScholarship}= require("../controllers/scholarship")
+const {createScholarship,editScholarship,getScholarshipById,deleteScholarship}= require("../controllers/scholarship")
 
 router.post("/", createScholarship);
 
-router.put("/:id", editScholarship);
+router.patch("/:id", editScholarship);
+
+router.get("/:id",getScholarshipById)
+
+router.delete("/:id",deleteScholarship)
 
 module.exports = router;
