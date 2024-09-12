@@ -5,6 +5,7 @@ const University = require('../models/university');
 const Language = require('../models/langauge');
 const CustomError = require("../utils/customError");
 
+
 exports.createScholarship = async (req, res,next) => {
    
 
