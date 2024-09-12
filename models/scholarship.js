@@ -11,12 +11,12 @@ const scholarshipSchema = new Schema({
         type: String,
         required: true
     },
-    fieldOfStudy: {
+    fieldOfStudyId: {
         type: Schema.Types.ObjectId,
         ref: 'FieldOfStudy', 
         required: true
     },
-    courseType: {
+    courseTypeId: {
         type: Schema.Types.ObjectId,
         ref: 'CourseType', 
         required: true
@@ -25,7 +25,7 @@ const scholarshipSchema = new Schema({
         type: String,
         required: true
     },
-    modeOfStudy: {
+    modeOfStudyId: {
         type: Schema.Types.ObjectId,
         ref: 'ModeOfStudy', 
         required: true

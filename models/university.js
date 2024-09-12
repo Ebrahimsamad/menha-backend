@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const universityIdSchema = new Schema({
+const universitySchema = new Schema({
     name: {
         type: String,
         required: true
@@ -26,11 +26,10 @@ const universityIdSchema = new Schema({
     pageUrl: {
         type: String
     }
-   
 }, {
     timestamps: true
 });
 
-const UniversityId = model('UniversityId', universityIdSchema);
+const University = model('University', universitySchema);
 
-module.exports = UniversityId;
+module.exports = University;
