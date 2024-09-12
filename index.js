@@ -1,14 +1,34 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+var cors = require("cors");
+const logsMiddlewares = require("./middlewares/winstonLogs");
+const logsFunction = require("./utils/winstonLogs");
 const CustomError = require("./utils/customError");
-const app = express();
-const PORT = 3000;
+const userRoutes = require("./routes/user");
+const User = require("./models/user");
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+const PORT = 3001;
+const app = express();
+app.use(express.json());
+app.use(cors());
+//logs any requests
+app.use(logsMiddlewares);
+
+//router routes
+app.use(userRoutes);
+
+//before error middleware
+app.use((req, res, next) => {
+  logsFunction.error(
+    `${req.method} ${
+      req.url
+    } - ${new Date().toISOString()} - Error: 404 not found this req`
+  );
+  res.status(404).json({ message: `${req.url} not found` });
 });
 
+//error middleware
 app.use((err, req, res, next) => {
   logsFunction.error(
     `${req.method} ${req.url} - ${new Date().toISOString()} - Error: ${
