@@ -1,9 +1,1 @@
 
-{"level":"info","message":"POST /modeOfStudy - 2024-09-12T20:37:25.564Z","service":"user-service"}
-{"level":"info","message":"POST /modeOfStudy - 2024-09-12T20:37:31.634Z","service":"user-service"}
-{"level":"error","message":"POST /modeOfStudy - 2024-09-12T20:37:31.748Z - Error: Mode of Study already exists.","service":"user-service"}
-{"level":"info","message":"GET /modeOfStudy - 2024-09-12T20:37:52.616Z","service":"user-service"}
-{"level":"info","message":"POST /modeOfStudy - 2024-09-12T20:38:07.610Z","service":"user-service"}
-{"level":"info","message":"GET /modeOfStudy - 2024-09-12T20:38:12.935Z","service":"user-service"}
-{"level":"info","message":"DELETE /modeOfStudy/66e3512fbc3abab81a58d402 - 2024-09-12T20:38:38.539Z","service":"user-service"}
-{"level":"info","message":"GET /modeOfStudy - 2024-09-12T20:38:46.366Z","service":"user-service"}
