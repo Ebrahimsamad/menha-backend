@@ -1,19 +1,1 @@
 
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:36:45.907Z","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:37:49.646Z","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:39:22.970Z","service":"user-service"}
-{"level":"info","message":"POST /fieldOfStudy - 2024-09-12T18:46:53.825Z","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:47:03.214Z","service":"user-service"}
-{"level":"info","message":"POST /fieldOfStudy - 2024-09-12T18:47:09.782Z","service":"user-service"}
-{"level":"error","message":"POST /fieldOfStudy - 2024-09-12T18:47:09.896Z - Error: Field of Study already exists.","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:47:15.614Z","service":"user-service"}
-{"level":"info","message":"POST /fieldOfStudy - 2024-09-12T18:47:33.015Z","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:47:38.786Z","service":"user-service"}
-{"level":"info","message":"POST /fieldOfStudy - 2024-09-12T18:47:48.540Z","service":"user-service"}
-{"level":"error","message":"POST /fieldOfStudy - 2024-09-12T18:47:48.842Z - Error: Field of Study already exists.","service":"user-service"}
-{"level":"info","message":"DELETE /fieldOfStudy:66e3374544a8e333e98aa07f - 2024-09-12T18:49:08.096Z","service":"user-service"}
-{"level":"error","message":"DELETE /fieldOfStudy:66e3374544a8e333e98aa07f - 2024-09-12T18:49:08.098Z - Error: 404 not found this req","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:49:23.070Z","service":"user-service"}
-{"level":"info","message":"DELETE /fieldOfStudy/66e3374544a8e333e98aa07f - 2024-09-12T18:50:46.498Z","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:50:53.139Z","service":"user-service"}
-{"level":"info","message":"GET /fieldOfStudy - 2024-09-12T18:52:49.350Z","service":"user-service"}
