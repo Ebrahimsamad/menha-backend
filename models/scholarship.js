@@ -59,7 +59,7 @@ const scholarshipSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Language', 
         required: true
-    }
+    },
 }, {
     timestamps: true
 });
