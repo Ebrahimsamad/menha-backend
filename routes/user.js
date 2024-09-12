@@ -4,55 +4,47 @@ const multer = require("multer");
 const upload = multer();
 const singleImageUpload = require("../middleware/uploadSingleImage");
 const {
-    createUser,
-    loginUser,
-    updateProfile,
-    changePassword,
-    forgetPasswordUser,
-    resetPasswordUser,
+  createUser,
+  loginUser,
+  updateProfile,
+  changePassword,
+  forgetPasswordUser,
+  resetPasswordUser,
 } = require("../utils/validation/user");
 const validation = require("../middleware/JoiValidation");
 const {
-    signup,
-    login,
-    updateProfileUser,
-    changeUserPassword,
-    forgetPassword,
-    resetPassword,
+  signup,
+  login,
+  updateProfileUser,
+  changeUserPassword,
+  forgetPassword,
+  resetPassword,
 } = require("../controllers/user");
 const auth = require("../middleware/auth");
 
 router.post("/login", validation(loginUser), login);
 router.post(
-    "/signup",
-    upload.fields([{ name: "image", maxCount: 1 }]),
-    validation(createUser),
-    singleImageUpload,
-    signup
+  "/signup",
+  upload.fields([{ name: "image", maxCount: 1 }]),
+  validation(createUser),
+  singleImageUpload,
+  signup
 );
 router.patch(
-    "/updateProfile",
-    auth,
-    upload.fields([{ name: "image", maxCount: 1 }]),
-    validation(updateProfile),
-    singleImageUpload,
-    updateProfileUser
+  "/update-profile",
+  auth,
+  upload.fields([{ name: "image", maxCount: 1 }]),
+  validation(updateProfile),
+  singleImageUpload,
+  updateProfileUser
 );
 router.patch(
-    "/changePassword",
-    auth,
-    validation(changePassword),
-    changeUserPassword
+  "/change-password",
+  auth,
+  validation(changePassword),
+  changeUserPassword
 );
-router.post(
-    "/forgetPassword",
-    validation(forgetPasswordUser),
-    forgetPassword
-);
-router.post(
-    "/resetPassword",
-    validation(resetPasswordUser),
-    resetPassword
-);
+router.post("/forget-password", validation(forgetPasswordUser), forgetPassword);
+router.post("/reset-password", validation(resetPasswordUser), resetPassword);
 
 module.exports = router;
