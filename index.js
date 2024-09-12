@@ -9,6 +9,7 @@ const userRoutes = require("./routes/user");
 const languageRoutes = require("./routes/languge");
 const fieldOfStudy = require("./routes/fieldOfStudy");
 const courseType = require("./routes/courseType");
+const modeOfStudy = require("./routes/modeOfStudy");
 const User = require("./models/user");
 const adminRoutes = require("./routes/admin");
 const scholarshipRoute= require("./routes/scholarship")
@@ -27,6 +28,7 @@ app.use(userRoutes);
 app.use("/languages",languageRoutes);
 app.use("/fieldOfStudy",fieldOfStudy);
 app.use("/courseType",courseType);
+app.use("/modeOfStudy",modeOfStudy);
 
 
 app.use((req, res, next) => {

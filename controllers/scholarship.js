@@ -2,7 +2,7 @@ const Scholarship = require('../models/scholarship');
 const FieldOfStudy = require('../models/fieldOfStudy');
 const CourseType = require('../models/courseType');
 const University = require('../models/university');
-const Language = require('../models/language');
+const Language = require('../models/langauge');
 
 exports.createScholarship = async (req, res) => {
    
