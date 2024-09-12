@@ -7,8 +7,7 @@ const logsFunction = require("./utils/winstonLogs");
 const CustomError = require("./utils/customError");
 const userRoutes = require("./routes/user");
 const User = require("./models/user");
-const adminRoutes = require('./routes/admin');
-
+const adminRoutes = require("./routes/admin");
 
 const PORT = 3001;
 const app = express();
@@ -18,7 +17,7 @@ app.use(cors());
 app.use(logsMiddlewares);
 
 //router routes
-app.use("/admin",adminRoutes)
+app.use("/admin", adminRoutes);
 app.use(userRoutes);
 
 //before error middleware
@@ -61,11 +60,11 @@ mongoose
         });
         await admin.save();
       }
-      app.listen(process.env.PORT || PORT, () => {
-        console.log(
-          `started with URL: http://localhost:${process.env.PORT || PORT}/`
-        );
-      });
+      //   app.listen(process.env.PORT || PORT, () => {
+      //     console.log(
+      //       `started with URL: http://localhost:${process.env.PORT || PORT}/`
+      //     );
+      //   });
     } catch (error) {
       logsFunction.error(
         ` ${new Date().toISOString()} - Error: ${error.message}`
