@@ -6,22 +6,33 @@ const logsMiddlewares = require("./middleware/winstonLogs");
 const logsFunction = require("./utils/winstonLogs");
 const CustomError = require("./utils/customError");
 const userRoutes = require("./routes/user");
+const languageRoutes = require("./routes/languge");
+const fieldOfStudy = require("./routes/fieldOfStudy");
+const courseType = require("./routes/courseType");
+const modeOfStudy = require("./routes/modeOfStudy");
 const User = require("./models/user");
 const adminRoutes = require("./routes/admin");
 const universityRoutes = require("./routes/university");
+const scholarshipRoute= require("./routes/scholarship")
 
-const PORT = 3001;
+const PORT = 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
-//logs any requests
+
 app.use(logsMiddlewares);
 
-//router routes
 app.use("/universities", universityRoutes);
+
 app.use("/admin", adminRoutes);
+app.use("scholarships",scholarshipRoute);
 app.use(userRoutes);
-//before error middleware
+app.use("/languages",languageRoutes);
+app.use("/fieldOfStudy",fieldOfStudy);
+app.use("/courseType",courseType);
+app.use("/modeOfStudy",modeOfStudy);
+
+
 app.use((req, res, next) => {
   logsFunction.error(
     `${req.method} ${
@@ -61,11 +72,11 @@ mongoose
         });
         await admin.save();
       }
-        app.listen(process.env.PORT || PORT, () => {
-          console.log(
-            `started with URL: http://localhost:${process.env.PORT || PORT}/`
-          );
-        });
+        // app.listen(process.env.PORT || PORT, () => {
+        //   console.log(
+        //     `started with URL: http://localhost:${process.env.PORT || PORT}/`
+        //   );
+        // });
     } catch (error) {
       logsFunction.error(
         ` ${new Date().toISOString()} - Error: ${error.message}`
