@@ -12,6 +12,7 @@ const courseType = require("./routes/courseType");
 const modeOfStudy = require("./routes/modeOfStudy");
 const User = require("./models/user");
 const adminRoutes = require("./routes/admin");
+const universityRoutes = require("./routes/university");
 const scholarshipRoute= require("./routes/scholarship")
 
 const PORT = 3000;
@@ -21,6 +22,7 @@ app.use(cors());
 
 app.use(logsMiddlewares);
 
+app.use("/universities", universityRoutes);
 
 app.use("/admin", adminRoutes);
 app.use("scholarships",scholarshipRoute);

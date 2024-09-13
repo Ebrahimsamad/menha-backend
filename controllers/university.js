@@ -1,7 +1,29 @@
 const University = require ("../models/university.js");
 const CustomError = require("../utils/customError.js");
+const Scholarship = require("../models/scholarship.js");
 
-const createUniversity = async (req , res)=>{
+
+const getAllUniversity = async (req, res , next) =>{
+    try {
+        const universities = await University.find();
+        res.status(200).send(universities);
+    } catch (error) {
+        next(new CustomError('Error fetching universities', 500 ));
+    }
+};
+
+const getUniversityById = async (req , res , next)=>{
+    const id =req.params.id;
+    try {
+        const university = await University.findById(id);
+        res.status(200).send(university);
+    } catch (error) {
+        next(new CustomError('Error fetching university' , 500));
+    }
+};
+
+const createUniversity = async (req , res , next)=>{
+
     try {
         const {name , address , image , faculityName , email , phone , pageUrl } = req.body;
 
@@ -28,35 +50,75 @@ const createUniversity = async (req , res)=>{
 
 
 
-const editUniversity = async (req , res) => {
-    try {
+    const editUniversity = async (req, res, next) => {
+        try {
+            const universityId = req.params.id;
+    
+            const { name, address, image, faculityName, email, phone, pageUrl } = req.body;
+            const updatedUniversity = await University.findByIdAndUpdate(
+                universityId,
+                {
+                    name,
+                    address,
+                    image,
+                    faculityName,
+                    email,
+                    phone,
+                    pageUrl
+                },
+                { new: true } 
+            );
+            
+            res.status(200).send({
+                message: 'University updated successfully!',
+                data: updatedUniversity
+            });
+        } catch (error) {
+            next(new CustomError('Error updating university', 500));
+        }
+    };
+    
+
+  
+    const deleteUniversity = async (req, res, next) => {
         const universityId = req.params.id;
-        const {name , address , image , faculityName , email , phone , pageUrl } = req.body;
+    
+        try {
+            const university = await University.findById(universityId);
+    
+            if (!university) {
+                return res.status(404).send('University not found');
+            }
+    
+            const associatedScholarships = await Scholarship.find({ universityId });
+    
+            if (associatedScholarships.length > 0) {
+                await Scholarship.deleteMany({ universityId });
+            }
+    
+            await University.findByIdAndDelete(universityId);
+    
+            res.status(200).send({
+                message: associatedScholarships.length > 0
+                    ? 'University and associated scholarships deleted successfully'
+                    : 'University deleted successfully, no associated scholarships found',
+                data: university
+            });
+        } catch (error) {
+            
+            next(new CustomError('Error deleting university', 500));
+        }
+    };
+    
 
-        const updatedUniversity = await University.findByIdAndUpdate(
-            universityId,
-            {
-                name,
-                address,
-                image,
-                faculityName,
-                email,
-                phone,
-                pageUrl
-            },
-        );
+module.exports = { 
+    createUniversity,
+    editUniversity,
+    getAllUniversity,
+    getUniversityById,
+    deleteUniversity
+      
 
-        res.status(200).send({
-            message: 'University updated successfully!',
-            data: updatedUniversity
-        });
-    } catch (error) {
-      next(new CustomError('Error updating university' , 500));
 };
-
-  }
-
-module.exports = { createUniversity };
-module.exports = {editUniversity};
 
 
