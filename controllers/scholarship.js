@@ -164,3 +164,59 @@ exports.getScholarshipById = async (req, res) => {
     }
 };
 
+exports.getAllScholarships = async (req, res,next) => {
+    try {
+        const {
+            page = 1,  
+            size = 10, 
+            fieldOfStudyId,
+            courseTypeId,
+            modeOfStudyId,
+            isWinter,
+            isFree,
+            isFullTime,
+            universityId,
+            languageId
+        } = req.query;
+
+        const filter = {};
+
+        if (fieldOfStudyId) filter.fieldOfStudyId = fieldOfStudyId;
+        if (courseTypeId) filter.courseTypeId = courseTypeId;
+        if (modeOfStudyId) filter.modeOfStudyId = modeOfStudyId;
+        if (isWinter !== undefined) filter.isWinter = isWinter === 'true';  
+        if (isFree !== undefined) filter.isFree = isFree === 'true';        
+        if (isFullTime !== undefined) filter.isFullTime = isFullTime === 'true';  
+        if (universityId) filter.universityId = universityId;
+        if (languageId) filter.languageId = languageId;
+
+        const limit = parseInt(size); 
+        const skip = (parseInt(page) - 1) * limit;  
+
+        const scholarships = await Scholarship.find(filter)
+            .populate('fieldOfStudyId', 'name')  
+            .populate('courseTypeId', 'name')    
+            .populate('modeOfStudyId', 'name')   
+            .populate('universityId', 'name')    
+            .populate('languageId', 'name')      
+            .sort({ createdAt: -1 })  
+            .skip(skip)  
+            .limit(limit);  
+
+        const total = await Scholarship.countDocuments(filter);
+
+        res.status(200).json({
+            scholarships,
+            pagination: {
+                totalItems: total,
+                totalPages: Math.ceil(total / limit),
+                currentPage: parseInt(page),
+                pageSize: limit
+            }
+        });
+    } catch (error) {
+        next(new CustomError("Internal server error.", 500));
+    }
+};
+
+
