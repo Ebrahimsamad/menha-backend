@@ -2,15 +2,15 @@ const express = require ("express");
 const { createUniversity, editUniversity, getAllUniversity, getUniversityById, deleteUniversity } = require("../controllers/university");
 const router = express.Router();
 
-router.get("/universities" , getAllUniversity);
+router.get("/" , getAllUniversity);
 
-router.get("/universities/:id" , getUniversityById);
+router.get("/:id" , getUniversityById);
 
-router.post("/universities" , createUniversity);
+router.post("/" , createUniversity);
 
-router.put("/universities/:id" , editUniversity);
+router.put("/:id" , editUniversity);
 
-router.delete("/universities/:id" , deleteUniversity);
+router.delete("/:id" , deleteUniversity);
 
 module.exports = router;
 
