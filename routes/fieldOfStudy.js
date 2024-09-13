@@ -6,8 +6,10 @@ const {
   getAllFieldsOfStudy,
   deleteFieldOfStudyById
 } = require("../controllers/fieldOfStudy");
+const validation =require('../middleware/JoiValidation')
+const{ createFieldOfStudyValidation}= require('../utils/validation/fieldofstudy')
 
-router.post("/", createFieldOfStudy);
+router.post("/", validation(createFieldOfStudyValidation),createFieldOfStudy);
 
 router.get("/", getAllFieldsOfStudy);
 
