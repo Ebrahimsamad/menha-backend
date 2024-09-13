@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const validateLanguage = require('../middleware/validateLanguage');
-
+const validation = require("../middleware/JoiValidation");
+const {
+  languageValidationCreate,languageValidationEdit
+} = require("../utils/validation/validateLanguage");
 const {
   createLanguage,
   getAllLanguages,
@@ -9,7 +11,7 @@ const {
 } = require("../controllers/language");
 
 
-router.post("/", validateLanguage, createLanguage);
+router.post("/",validation(languageValidationCreate) , createLanguage);
 
 
 router.get("/", getAllLanguages);
@@ -18,4 +20,3 @@ router.get("/", getAllLanguages);
 router.delete("/:id", deleteLanguageById);
 
 module.exports = router;
-// git checkout -b hossam/feature/create-update-user-profile-and-change-user-password

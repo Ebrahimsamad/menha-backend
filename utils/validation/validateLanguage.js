@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const languageValidationSchema = Joi.object({
+const languageValidationCreate = Joi.object({
     name: Joi.string()
         .min(3)
         .max(50)
@@ -23,12 +23,26 @@ const languageValidationSchema = Joi.object({
             'any.required': 'Course is a required field'
         })
 });
+const languageValidationEdit = Joi.object({
+    name: Joi.string()
+        .min(3)
+        .max(50)
+        
+        .messages({
+            'string.base': 'Name should be a type of string',
+            'string.empty': 'Name cannot be an empty field',
+            'string.min': 'Name should have a minimum length of {#limit}',
+            'string.max': 'Name should have a maximum length of {#limit}',
+        }),
+    course: Joi.array()
+        .items(Joi.string().min(1))
+        .min(1)
+        .messages({
+            'array.base': 'Course should be an array',
+            'array.empty': 'Course array cannot be empty',
+            'array.min': 'Course should have at least one item',
+        })
+});
 
-module.exports = {languageValidationSchema  };
-// const validateLanguage = (req, res, next) => {
-//     const { error } = languageValidationSchema.validate(req.body);
-//     if (error) return res.status(400).send(error.details[0].message);
-//     next();
-// };
+module.exports = {languageValidationEdit,languageValidationCreate  };
 
-// module.exports = validateLanguage;
