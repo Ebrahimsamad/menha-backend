@@ -72,11 +72,11 @@ mongoose
         });
         await admin.save();
       }
-        // app.listen(process.env.PORT || PORT, () => {
-        //   console.log(
-        //     `started with URL: http://localhost:${process.env.PORT || PORT}/`
-        //   );
-        // });
+        app.listen(process.env.PORT || PORT, () => {
+          console.log(
+            `started with URL: http://localhost:${process.env.PORT || PORT}/`
+          );
+        });
     } catch (error) {
       logsFunction.error(
         ` ${new Date().toISOString()} - Error: ${error.message}`
