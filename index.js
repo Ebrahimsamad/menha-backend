@@ -25,7 +25,7 @@ app.use(logsMiddlewares);
 app.use("/universities", universityRoutes);
 
 app.use("/admin", adminRoutes);
-app.use("scholarships",scholarshipRoute);
+app.use("/scholarships",scholarshipRoute);
 app.use(userRoutes);
 app.use("/languages",languageRoutes);
 app.use("/fieldOfStudy",fieldOfStudy);

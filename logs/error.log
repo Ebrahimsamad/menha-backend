@@ -1,1 +1,2 @@
 
+{"level":"error","message":"POST /scholarships - 2024-09-14T00:58:11.701Z - Error: Scholarship title is required., Scholarship description is required., Course Type is required., Scholarship duration is required., Mode of Study is required., Scholarship country is required., GPA is required., University is required., Language is required.","service":"user-service"}
