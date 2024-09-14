@@ -22,15 +22,15 @@ app.use(cors());
 
 app.use(logsMiddlewares);
 
-app.use("/universities", universityRoutes);
+app.use("/university", universityRoutes);
 
 app.use("/admin", adminRoutes);
-app.use("/scholarships",scholarshipRoute);
+app.use("/scholarship",scholarshipRoute);
 app.use(userRoutes);
-app.use("/languages",languageRoutes);
-app.use("/fieldOfStudy",fieldOfStudy);
-app.use("/courseType",courseType);
-app.use("/modeOfStudy",modeOfStudy);
+app.use("/language",languageRoutes);
+app.use("/field-of-study",fieldOfStudy);
+app.use("/course-type",courseType);
+app.use("/mode-of-study",modeOfStudy);
 
 
 app.use((req, res, next) => {

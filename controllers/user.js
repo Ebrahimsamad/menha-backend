@@ -123,6 +123,26 @@ exports.updateProfileUser = async (req, res, next) => {
       next(new CustomError(error.message, 500));
     }
   };
+
+  exports.resetPasswordCheckToken = async (req, res, next) => {
+    const { token, email} = req.body;
+    try{
+
+      const user = await User.findOne({
+        email,
+        resetToken: token,
+        resetTokenExpiration: { $gt: Date.now() },
+      });
+      if (!user) {
+        return next(new CustomError("rest token wrong or expirat", 400));
+      }
+      res.status(200).send({ message: "Reset password token successfully" });
+
+    }catch(err){
+      next(new CustomError("Internal server error.", 500));
+    }
+  }
+
   exports.resetPassword = async (req, res, next) => {
     const { token, email, newPassword } = req.body;
   
@@ -134,7 +154,7 @@ exports.updateProfileUser = async (req, res, next) => {
         resetTokenExpiration: { $gt: Date.now() },
       });
       if (!user) {
-        return next(new CustomError("rest token wrong or expirat or User not found.", 404));
+        return next(new CustomError("rest token wrong or expirat or User not found.", 400));
       }
   
       user.password = newPassword;
