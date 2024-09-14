@@ -9,15 +9,19 @@ const validation = require("../middleware/JoiValidation");
 const {
   languageValidationCreate
 }=require('../utils/validation/language')
+const isAdminCheck = require("../middleware/adminRoleCheck");
+const auth = require("../middleware/auth");
 
 
-router.post("/", validation(languageValidationCreate),createLanguage);
+router.post("/",auth,
+isAdminCheck(true), validation(languageValidationCreate),createLanguage);
 
 
 router.get("/", getAllLanguages);
 
 
-router.delete("/:id", deleteLanguageById);
+router.delete("/:id", auth,
+isAdminCheck(true),deleteLanguageById);
 
 module.exports = router;
  

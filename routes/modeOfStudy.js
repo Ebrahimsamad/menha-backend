@@ -7,12 +7,16 @@ const {
 } = require("../controllers/modeOfStudy");
 const validation = require("../middleware/JoiValidation");
 const { modeofstudyvaldate }=require('../utils/validation/modeOfStudy')
+const isAdminCheck = require("../middleware/adminRoleCheck");
+const auth = require("../middleware/auth");
 
 
-router.post("/",validation(modeofstudyvaldate) ,createModeOfStudy);
+router.post("/",auth,
+isAdminCheck(true),validation(modeofstudyvaldate) ,createModeOfStudy);
 
 router.get("/", getAllModesOfStudy);
 
-router.delete("/:id", deleteModeOfStudyById);
+router.delete("/:id",auth,
+isAdminCheck(true), deleteModeOfStudyById);
 
 module.exports = router;
