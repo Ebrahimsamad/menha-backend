@@ -4,14 +4,20 @@ const {createScholarship,editScholarship,getScholarshipById,deleteScholarship,ge
 const validation = require("../middleware/JoiValidation");
 const {createScholarshipValidation,
     editScholarshipValidation}=require('../utils/validation/scholarship')
-router.post("/",validation(createScholarshipValidation), createScholarship);
+const auth = require("../middleware/auth");
+const isAdminCheck = require("../middleware/adminRoleCheck");
 
-router.patch("/:id", validation(editScholarshipValidation),editScholarship);
+router.post("/",auth,
+isAdminCheck(true),validation(createScholarshipValidation), createScholarship);
+
+router.patch("/:id",auth,
+isAdminCheck(true), validation(editScholarshipValidation),editScholarship);
 
 router.get("/",getAllScholarships);
 
 router.get("/:id",getScholarshipById)
 
-router.delete("/:id",deleteScholarship)
+router.delete("/:id",auth,
+isAdminCheck(true),deleteScholarship)
 
 module.exports = router;
