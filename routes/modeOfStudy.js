@@ -5,8 +5,11 @@ const {
   getAllModesOfStudy,
   deleteModeOfStudyById
 } = require("../controllers/modeOfStudy");
+const validation = require("../middleware/JoiValidation");
+const { modeofstudyvaldate }=require('../utils/validation/modeOfStudy')
 
-router.post("/", createModeOfStudy);
+
+router.post("/",validation(modeofstudyvaldate) ,createModeOfStudy);
 
 router.get("/", getAllModesOfStudy);
 
