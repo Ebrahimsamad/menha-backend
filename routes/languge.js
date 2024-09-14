@@ -5,9 +5,13 @@ const {
   getAllLanguages,
   deleteLanguageById
 } = require("../controllers/language");
+const validation = require("../middleware/JoiValidation");
+const {
+  languageValidationCreate
+}=require('../utils/validation/language')
 
 
-router.post("/", createLanguage);
+router.post("/", validation(languageValidationCreate),createLanguage);
 
 
 router.get("/", getAllLanguages);
