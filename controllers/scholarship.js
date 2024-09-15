@@ -149,10 +149,10 @@ exports.getScholarshipById = async (req, res) => {
 
     try {
         const scholarship = await Scholarship.findById(id)
-            .populate('fieldOfStudyId', 'name') 
-            .populate('courseTypeId', 'name')   
-            .populate('universityId', 'name')   
-            .populate('languageId', 'name');    
+            .populate('fieldOfStudyId') 
+            .populate('courseTypeId')   
+            .populate('universityId')   
+            .populate('languageId');    
 
         if (!scholarship) {
             return next(new CustomError("Scholarship not found", 404))
@@ -194,11 +194,11 @@ exports.getAllScholarships = async (req, res,next) => {
         const skip = (parseInt(page) - 1) * limit;  
 
         const scholarships = await Scholarship.find(filter)
-            .populate('fieldOfStudyId', 'name')  
-            .populate('courseTypeId', 'name')    
-            .populate('modeOfStudyId', 'name')   
-            .populate('universityId', 'name')    
-            .populate('languageId', 'name')      
+            .populate('fieldOfStudyId')  
+            .populate('courseTypeId')    
+            .populate('modeOfStudyId')   
+            .populate('universityId')    
+            .populate('languageId')      
             .sort({ createdAt: -1 })  
             .skip(skip)  
             .limit(limit);  
