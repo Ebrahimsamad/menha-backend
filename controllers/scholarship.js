@@ -191,7 +191,8 @@ exports.getAllScholarships = async (req, res,next) => {
         if (languageId) filter.languageId = languageId;
 
         const limit = parseInt(size); 
-        const skip = (parseInt(page) - 1) * limit;  
+        const currentPage = parseInt(page);  
+        const skip = (currentPage - 1) * limit;  
 
         const scholarships = await Scholarship.find(filter)
             .populate('fieldOfStudyId')  
@@ -204,19 +205,23 @@ exports.getAllScholarships = async (req, res,next) => {
             .limit(limit);  
 
         const total = await Scholarship.countDocuments(filter);
+        const totalPages = Math.ceil(total / limit);
 
         res.status(200).json({
             scholarships,
             pagination: {
                 totalItems: total,
-                totalPages: Math.ceil(total / limit),
-                currentPage: parseInt(page),
-                pageSize: limit
+                totalPages: totalPages,
+                currentPage: currentPage,
+                pageSize: limit,
+                hasNextPage: currentPage < totalPages, 
+                hasPreviousPage: currentPage > 1      
             }
         });
     } catch (error) {
         next(new CustomError("Internal server error.", 500));
     }
 };
+
 
 
