@@ -20,7 +20,6 @@ exports.signup = async (req, res, next) => {
     const user = new User({ userName, email, password ,image:req.body.image });
     await user.save();
 
-    if(user){
       const token = await jwtSign(
         { userId: user._id },
         process.env.JWT_SECRET_ACCESS_TOKEN,
@@ -28,10 +27,10 @@ exports.signup = async (req, res, next) => {
           expiresIn: "30d",
         }
       );
-    }
-
-    res.status(201).send({ message: "User created and logged in", token,user });
+      
+      res.status(201).send({ message: "User created and logged in", token,user });
   } catch (error) {
+    console.log(error)
     next(new CustomError("Internal server error.", 500));
   }
 };
