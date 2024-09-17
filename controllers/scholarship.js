@@ -152,8 +152,8 @@ exports.getScholarshipById = async (req, res) => {
             .populate('fieldOfStudyId') 
             .populate('courseTypeId')   
             .populate('universityId')   
-            .populate('languageId');    
-
+            .populate('languageId')    
+            .populate('modeOfStudyId')   
         if (!scholarship) {
             return next(new CustomError("Scholarship not found", 404))
         }
