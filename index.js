@@ -33,7 +33,7 @@ app.use("/field-of-study", fieldOfStudy);
 app.use("/course-type", courseType);
 app.use("/mode-of-study", modeOfStudy);
 app.use("/contact-us", contactUsRouter);
-
+app.use("/men7a-impact",men7aImpactRoute)
 
 app.use((req, res, next) => {
   logsFunction.error(
