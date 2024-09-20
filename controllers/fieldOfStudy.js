@@ -12,12 +12,10 @@ const createFieldOfStudy = async (req, res, next) => {
 
     const newFieldOfStudy = new FieldOfStudy({ fieldOfStudy });
     await newFieldOfStudy.save();
-    res
-      .status(201)
-      .json({
-        message: "Field of Study created successfully",
-        newFieldOfStudy,
-      });
+    res.status(201).json({
+      message: "Field of Study created successfully",
+      newFieldOfStudy,
+    });
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }
@@ -42,12 +40,10 @@ const deleteFieldOfStudyById = async (req, res, next) => {
       return next(new CustomError("Field of Study not found.", 404));
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Field of Study deleted successfully",
-        deletedFieldOfStudy,
-      });
+    res.status(200).json({
+      message: "Field of Study deleted successfully",
+      deletedFieldOfStudy,
+    });
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }

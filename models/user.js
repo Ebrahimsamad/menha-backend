@@ -1,48 +1,48 @@
 const { model, Schema } = require("mongoose");
 const bcrypt = require("bcrypt");
 
-
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     userName: {
-        type: String
+      type: String,
     },
     email: {
-        type: String
+      type: String,
     },
     password: {
-        type: String
+      type: String,
     },
     image: {
-        type: String,
-        default: "https://ik.imagekit.io/7ksxy0uxk/e-commerce/image-66bd20d57bc0778bbe723d3a-1724163754541_D9lZaYMkG.jpeg?updatedAt=1724163756240"
+      type: String,
+      default:
+        "https://ik.imagekit.io/2crfufcjy/static/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcGYtaWNvbjQtamlyMjA2NC1wb3ItbC5qcGc.jpg?updatedAt=1726790573220",
     },
     isAdmin: {
-        type: Boolean,
-        default: "false",
+      type: Boolean,
+      default: "false",
     },
     resetToken: {
-        type: String,
+      type: String,
     },
     resetTokenExpiration: {
-        type: Date,
+      type: Date,
     },
-},
-    {
-        timestamps: true,
-        toJSON: {
-            transform(doc, ret) {
-                delete ret.password;
-            },
-        },
-    }
-)
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+      },
+    },
+  }
+);
 userSchema.pre("save", async function () {
-    if (this.isModified("password")) {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 });
 
 const User = model("User", userSchema);
-
 
 module.exports = User;

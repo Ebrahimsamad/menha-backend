@@ -10,7 +10,7 @@ const {
   changePassword,
   forgetPasswordUser,
   resetPasswordUser,
-  resetPasswordCheckTokenValidation
+  resetPasswordCheckTokenValidation,
 } = require("../utils/validation/user");
 const validation = require("../middleware/JoiValidation");
 const {
@@ -20,7 +20,7 @@ const {
   changeUserPassword,
   forgetPassword,
   resetPassword,
-  resetPasswordCheckToken
+  resetPasswordCheckToken,
 } = require("../controllers/user");
 const auth = require("../middleware/auth");
 
@@ -47,7 +47,11 @@ router.patch(
   changeUserPassword
 );
 router.post("/forget-password", validation(forgetPasswordUser), forgetPassword);
-router.post("/check-reset-password-token", validation(resetPasswordCheckTokenValidation),resetPasswordCheckToken)
+router.post(
+  "/check-reset-password-token",
+  validation(resetPasswordCheckTokenValidation),
+  resetPasswordCheckToken
+);
 router.post("/reset-password", validation(resetPasswordUser), resetPassword);
 
 module.exports = router;

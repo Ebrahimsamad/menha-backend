@@ -1,35 +1,38 @@
 const { model, Schema } = require("mongoose");
 
-const universitySchema = new Schema({
+const universitySchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     address: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     image: {
-        type: String
+      type: String,
     },
     faculityName: {
-        type: String
+      type: String,
     },
     email: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     phone: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     pageUrl: {
-        type: String
-    }
-}, {
-    timestamps: true
-});
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const University = model('University', universitySchema);
+const University = model("University", universitySchema);
 
 module.exports = University;
