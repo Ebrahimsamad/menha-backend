@@ -28,11 +28,12 @@ exports.signup = async (req, res, next) => {
         }
       );
     }
-
     res
       .status(201)
       .send({ message: "User created and logged in", token, user });
+
   } catch (error) {
+    console.log(error)
     next(new CustomError("Internal server error.", 500));
   }
 };

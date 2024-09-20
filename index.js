@@ -15,6 +15,7 @@ const adminRoutes = require("./routes/admin");
 const universityRoutes = require("./routes/university");
 const scholarshipRoute = require("./routes/scholarship");
 const contactUsRouter = require("./routes/contact-us");
+const men7aImpactRoute=require("./routes/men7aImpact")
 const PORT = 3000;
 const app = express();
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use("/field-of-study", fieldOfStudy);
 app.use("/course-type", courseType);
 app.use("/mode-of-study", modeOfStudy);
 app.use("/contact-us", contactUsRouter);
+
 
 app.use((req, res, next) => {
   logsFunction.error(
