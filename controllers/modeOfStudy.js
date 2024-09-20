@@ -12,12 +12,10 @@ const createModeOfStudy = async (req, res, next) => {
 
     const newModeOfStudy = new ModeOfStudy({ modeOfStudy });
     await newModeOfStudy.save();
-    res
-      .status(201)
-      .json({
-        message: "Mode of Study created successfully",
-        newModeOfStudy,
-      });
+    res.status(201).json({
+      message: "Mode of Study created successfully",
+      newModeOfStudy,
+    });
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }
@@ -42,12 +40,10 @@ const deleteModeOfStudyById = async (req, res, next) => {
       return next(new CustomError("Mode of Study not found.", 404));
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Mode of Study deleted successfully",
-        deletedModeOfStudy,
-      });
+    res.status(200).json({
+      message: "Mode of Study deleted successfully",
+      deletedModeOfStudy,
+    });
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }

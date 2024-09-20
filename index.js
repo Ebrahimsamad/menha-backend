@@ -13,8 +13,8 @@ const modeOfStudy = require("./routes/modeOfStudy");
 const User = require("./models/user");
 const adminRoutes = require("./routes/admin");
 const universityRoutes = require("./routes/university");
-const scholarshipRoute= require("./routes/scholarship")
-
+const scholarshipRoute = require("./routes/scholarship");
+const contactUsRouter = require("./routes/contact-us");
 const PORT = 3000;
 const app = express();
 app.use(express.json());
@@ -25,13 +25,13 @@ app.use(logsMiddlewares);
 app.use("/university", universityRoutes);
 
 app.use("/admin", adminRoutes);
-app.use("/scholarship",scholarshipRoute);
+app.use("/scholarship", scholarshipRoute);
 app.use(userRoutes);
-app.use("/language",languageRoutes);
-app.use("/field-of-study",fieldOfStudy);
-app.use("/course-type",courseType);
-app.use("/mode-of-study",modeOfStudy);
-
+app.use("/language", languageRoutes);
+app.use("/field-of-study", fieldOfStudy);
+app.use("/course-type", courseType);
+app.use("/mode-of-study", modeOfStudy);
+app.use("/contact-us", contactUsRouter);
 
 app.use((req, res, next) => {
   logsFunction.error(
@@ -72,11 +72,11 @@ mongoose
         });
         await admin.save();
       }
-        app.listen(process.env.PORT || PORT, () => {
-          console.log(
-            `started with URL: http://localhost:${process.env.PORT || PORT}/`
-          );
-        });
+      app.listen(process.env.PORT || PORT, () => {
+        console.log(
+          `started with URL: http://localhost:${process.env.PORT || PORT}/`
+        );
+      });
     } catch (error) {
       logsFunction.error(
         ` ${new Date().toISOString()} - Error: ${error.message}`

@@ -12,12 +12,10 @@ const createCourseType = async (req, res, next) => {
 
     const newCourseType = new CourseType({ courseType });
     await newCourseType.save();
-    res
-      .status(201)
-      .json({
-        message: "Course Type created successfully",
-        newCourseType,
-      });
+    res.status(201).json({
+      message: "Course Type created successfully",
+      newCourseType,
+    });
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }
@@ -42,12 +40,10 @@ const deleteCourseTypeById = async (req, res, next) => {
       return next(new CustomError("Course Type not found.", 404));
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Course Type deleted successfully",
-        deletedCourseType,
-      });
+    res.status(200).json({
+      message: "Course Type deleted successfully",
+      deletedCourseType,
+    });
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }
