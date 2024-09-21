@@ -27,6 +27,13 @@ const userSchema = new Schema(
     resetTokenExpiration: {
       type: Date,
     },
+    savedScholarshipIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Scholarship",
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,
