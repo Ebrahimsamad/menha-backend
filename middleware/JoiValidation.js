@@ -13,14 +13,31 @@ module.exports = (schema) => async (req, res, next) => {
         },
       };
     }
-
-    if (req.files && req.files["images"]) {
+    if (req.files && req.files["militaryStatusImage"]) {
       bodyValidation = {
         ...bodyValidation,
-        images: req.files["images"].map((file) => ({
-          buffer: file.buffer,
-          mimetype: file.mimetype,
-        })),
+        militaryStatusImage: {
+          buffer: req.files["militaryStatusImage"][0].buffer,
+          mimetype: req.files["militaryStatusImage"][0].mimetype,
+        },
+      };
+    }
+    if (req.files && req.files["IDImage"]) {
+      bodyValidation = {
+        ...bodyValidation,
+        IDImage: {
+          buffer: req.files["IDImage"][0].buffer,
+          mimetype: req.files["IDImage"][0].mimetype,
+        },
+      };
+    }
+    if (req.files && req.files["graduationImage"]) {
+      bodyValidation = {
+        ...bodyValidation,
+        graduationImage: {
+          buffer: req.files["graduationImage"][0].buffer,
+          mimetype: req.files["graduationImage"][0].mimetype,
+        },
       };
     }
 

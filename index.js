@@ -17,6 +17,7 @@ const scholarshipRoute = require("./routes/scholarship");
 const contactUsRouter = require("./routes/contact-us");
 const men7aImpactRoute=require("./routes/men7aImpact");
 const savedScholarshipRoute = require("./routes/savedScholarships");
+const portfolioRoute = require("./routes/portfolio");
 const PORT = 3000;
 const app = express();
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use("/mode-of-study", modeOfStudy);
 app.use("/contact-us", contactUsRouter);
 app.use("/men7a-impact",men7aImpactRoute)
 app.use("/saved-scholarship",savedScholarshipRoute)
+app.use("/portfolio", portfolioRoute)
 app.use((req, res, next) => {
   logsFunction.error(
     `${req.method} ${

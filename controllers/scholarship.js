@@ -130,7 +130,7 @@ exports.editScholarship = async (req, res, next) => {
   }
 };
 
-exports.deleteScholarship = async (req, res) => {
+exports.deleteScholarship = async (req, res,next) => {
   const { id } = req.params;
 
   try {
@@ -147,7 +147,7 @@ exports.deleteScholarship = async (req, res) => {
   }
 };
 
-exports.getScholarshipById = async (req, res) => {
+exports.getScholarshipById = async (req, res,next) => {
   const { id } = req.params;
 
   try {

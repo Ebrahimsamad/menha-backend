@@ -32,6 +32,8 @@
     "nodemailer": "^6.9.15",
     "path": "^0.12.7",
     "sharp": "^0.33.5",
+    "strip": "^3.0.0",
+    "stripe": "^16.12.0",
     "winston": "^3.14.2"
   },
   "devDependencies": {
