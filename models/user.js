@@ -34,6 +34,13 @@ const userSchema = new Schema(
         default: [],
       },
     ],
+    isBuyPortfolio:{
+      type: Boolean,
+      default: false,
+    },
+    expBuyPortfolio:{
+      type:Date,
+    }
   },
   {
     timestamps: true,
