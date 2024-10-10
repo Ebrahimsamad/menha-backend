@@ -166,12 +166,12 @@ exports.getFreePlan = async (req, res, next) => {
 };
 
 exports.buyPortfolio = async (req, res, next) => {
-  const { date, price ,userName,userId} = req.body;
+  const { date, price } = req.body;
   const portfolioData = {
     price_data: {
       currency: "usd",
       product_data: {
-        name: `Portfolio ${userName} (${date})`,
+        name: `Portfolio ${req.user.userName} (${date})`,
       },
       unit_amount: price * 100,
     },
