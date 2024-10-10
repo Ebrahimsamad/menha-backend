@@ -123,12 +123,10 @@ exports.updatePortfolio = async (req, res, next) => {
       .populate("languageId")
       .populate("userID");
 
-    res
-      .status(200)
-      .send({
-        message: "your portfolio updated successfully",
-        updatedPortfolio,
-      });
+    res.status(200).send({
+      message: "your portfolio updated successfully",
+      updatedPortfolio,
+    });
   } catch (error) {
     next(new CustomError(error.message, 500));
   }
@@ -149,10 +147,10 @@ exports.deletePortfolio = async (req, res, next) => {
 exports.getFreePlan = async (req, res, next) => {
   try {
     const user = req.user;
-    // if (user.isGetFreePlan)
-    //   return next(
-    //     new CustomError("You have already benefited from the offer", 400)
-    //   );
+    if (user.isGetFreePlan)
+      return next(
+        new CustomError("You have already benefited from the offer", 400)
+      );
     let currentDate = new Date();
     let expDate = new Date(currentDate);
     expDate.setMonth(currentDate.getMonth() + 1);
@@ -175,7 +173,7 @@ exports.buyPortfolio = async (req, res, next) => {
       product_data: {
         name: `Portfolio ${req.user.userName} (${date})`,
       },
-      unit_amount: price *100,
+      unit_amount: price * 100,
     },
     quantity: 1,
   };
@@ -184,11 +182,11 @@ exports.buyPortfolio = async (req, res, next) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [portfolioData],
       mode: "payment",
-      success_url: `${process.env.BASE_URL}/portfolio/complete?session_id={CHECKOUT_SESSION_ID}&&id=${req.user.id}&&date=${date}`,
+      success_url: `${process.env.BASE_URL}/portfolio/complete?session_id={CHECKOUT_SESSION_ID}&id=${req.user.id}&date=${date}`,
       cancel_url: `${process.env.BASE_URL}/portfolio/cancel`,
     });
-    res.json({ url: session.url});
-    } catch (error) {
+    res.json({ url: session.url });
+  } catch (error) {
     next(new CustomError(error.message, 500));
   }
 };
@@ -197,23 +195,26 @@ exports.completePayment = async (req, res, next) => {
   const date = req.query.date;
   let currentDate = new Date();
   let expDate = new Date(currentDate);
+
   if (date === "1 month") {
     expDate.setMonth(currentDate.getMonth() + 1);
   } else if (date === "3 month") {
     expDate.setMonth(currentDate.getMonth() + 3);
-  } else if (date === "3 month") {
+  } else if (date === "6 month") {
     expDate.setMonth(currentDate.getMonth() + 6);
   }
-  const user = await User.findByIdAndUpdate(
-    userID,
-    { isBuyPortfolio: true, expBuyPortfolio: expDate },
-    { new: true }
-  );
-  const session_id = req.query.session_id;
 
   try {
-    res.render(
-      `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&&expBuyPortfolio=${expDate}`
+    const user = await User.findByIdAndUpdate(
+      userID,
+      { isBuyPortfolio: true, expBuyPortfolio: expDate },
+      { new: true }
+    );
+
+    const session_id = req.query.session_id;
+
+    res.redirect(
+      `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&expBuyPortfolio=${expDate}`
     );
   } catch (error) {
     next(new CustomError(error.message, 500));
