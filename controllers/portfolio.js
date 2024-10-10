@@ -182,7 +182,7 @@ exports.buyPortfolio = async (req, res, next) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [portfolioData],
       mode: "payment",
-      success_url: `${process.env.BASE_URL}/portfolio/complete?session_id={CHECKOUT_SESSION_ID}&id=${userId}&date=${date}`,
+      success_url: `${process.env.BASE_URL}/portfolio/complete?session_id={CHECKOUT_SESSION_ID}&id=${req.user.id}&date=${date}`,
       cancel_url: `${process.env.BASE_URL}/portfolio/cancel`,
     });
     res.json({ url: session.url });

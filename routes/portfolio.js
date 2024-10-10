@@ -42,6 +42,19 @@ router.get("/", auth, isAdminCheck(true), getAllPortfolios);
 
 router.get("/user", auth, getUserProfile);
 
+
+router.post("/buy",auth, buyPortfolio);
+
+router.post("/free", auth, getFreePlan);
+
+router.get("/complete", completePayment);
+
+router.get("/cancel", cancel);
+
+router.post("/accept/:id", auth, isAdminCheck(true),acceptProtfolio);
+
+router.post("/reject/:id", auth, isAdminCheck(true), rejectPortfolio);
+
 router.get("/:id", auth, isAdminCheck(true), getPortfolioById);
 
 router.patch(
@@ -59,16 +72,5 @@ router.patch(
 
 router.delete("/:id", auth, deletePortfolio);
 
-router.post("/buy", buyPortfolio);
-
-router.post("/free", auth, getFreePlan);
-
-router.get("/complete", completePayment);
-
-router.get("/cancel", cancel);
-
-router.post("/accept/:id", auth, isAdminCheck(true),acceptProtfolio);
-
-router.post("/reject/:id", auth, isAdminCheck(true), rejectPortfolio);
 
 module.exports = router;
