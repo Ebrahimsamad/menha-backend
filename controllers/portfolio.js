@@ -166,12 +166,12 @@ exports.getFreePlan = async (req, res, next) => {
 };
 
 exports.buyPortfolio = async (req, res, next) => {
-  const { date, price } = req.body;
+  const { date, price ,userName,userId} = req.body;
   const portfolioData = {
     price_data: {
       currency: "usd",
       product_data: {
-        name: `Portfolio ${req.user.userName} (${date})`,
+        name: `Portfolio ${userName} (${date})`,
       },
       unit_amount: price * 100,
     },
@@ -182,7 +182,7 @@ exports.buyPortfolio = async (req, res, next) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [portfolioData],
       mode: "payment",
-      success_url: `${process.env.BASE_URL}/portfolio/complete?session_id={CHECKOUT_SESSION_ID}&id=${req.user.id}&date=${date}`,
+      success_url: `${process.env.BASE_URL}/portfolio/complete?session_id={CHECKOUT_SESSION_ID}&id=${userId}&date=${date}`,
       cancel_url: `${process.env.BASE_URL}/portfolio/cancel`,
     });
     res.json({ url: session.url });
@@ -217,7 +217,7 @@ exports.completePayment = async (req, res, next) => {
       `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&expBuyPortfolio=${expDate}`
     );
   } catch (error) {
-    next(new CustomError(error.message, 500));
+    next(new CustomError("jiko"+error.message, 500));
   }
 };
 exports.cancel = (req, res) => {
