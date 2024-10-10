@@ -59,13 +59,13 @@ router.patch(
 
 router.delete("/:id", auth, deletePortfolio);
 
-router.post("/buy", auth, buyPortfolio);
+router.post("/buy", buyPortfolio);
 
 router.post("/free", auth, getFreePlan);
 
-router.post("/complete", completePayment);
+router.get("/complete", completePayment);
 
-router.post("/cancel", cancel);
+router.get("/cancel", cancel);
 
 router.post("/accept/:id", auth, isAdminCheck(true),acceptProtfolio);
 
