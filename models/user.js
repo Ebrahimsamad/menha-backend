@@ -40,6 +40,10 @@ const userSchema = new Schema(
     },
     expBuyPortfolio:{
       type:Date,
+    },
+    isGetFreePlan:{
+      type: Boolean,
+      default: false,
     }
   },
   {

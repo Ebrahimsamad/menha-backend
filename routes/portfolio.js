@@ -21,7 +21,8 @@ const {
   completePayment,
   cancel,
   acceptProtfolio,
-  rejectPortfolio
+  rejectPortfolio,
+  getFreePlan
 } = require("../controllers/portfolio");
 
 router.post(
@@ -60,9 +61,11 @@ router.delete("/:id", auth, deletePortfolio);
 
 router.post("/buy", auth, buyPortfolio);
 
+router.post("/free", auth, getFreePlan);
+
 router.post("/complete", completePayment);
 
-router.post("/cancel", auth, cancel);
+router.post("/cancel", cancel);
 
 router.post("/accept/:id", auth, isAdminCheck(true),acceptProtfolio);
 
