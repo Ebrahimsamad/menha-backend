@@ -166,12 +166,12 @@ exports.getFreePlan = async (req, res, next) => {
 };
 
 exports.buyPortfolio = async (req, res, next) => {
-  const { date, price } = req.body;
+  const { date, price ,userName,userId} = req.body;
   const portfolioData = {
     price_data: {
       currency: "usd",
       product_data: {
-        name: `Portfolio ${req.user.userName} (${date})`,
+        name: `Portfolio ${userName} (${date})`,
       },
       unit_amount: price * 100,
     },
@@ -217,7 +217,7 @@ exports.completePayment = async (req, res, next) => {
       `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&expBuyPortfolio=${expDate}`
     );
   } catch (error) {
-    next(new CustomError(error.message, 500));
+    next(new CustomError("jiko"+error.message, 500));
   }
 };
 exports.cancel = (req, res) => {
