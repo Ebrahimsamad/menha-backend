@@ -217,11 +217,11 @@ exports.completePayment = async (req, res, next) => {
       `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&expBuyPortfolio=${expDate}`
     );
   } catch (error) {
-    next(new CustomError("jiko"+error.message, 500));
+    next(new CustomError(error.message, 500));
   }
 };
 exports.cancel = (req, res) => {
-  res.render(process.env.PRICING_PAGE_URL);
+  res.render(`${process.env.PRICING_PAGE_URL}`);
 };
 
 exports.acceptProtfolio = async (req, res, next) => {
