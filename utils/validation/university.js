@@ -40,11 +40,8 @@ const createUniversityValidation = Joi.object({
       "any.required": "University email is required.",
     }),
   phone: Joi.string()
-    .pattern(/^(010|011|012|015)\d{8}$/)
     .required()
     .messages({
-      "string.pattern.base":
-        "Phone number must start with 010, 011, 012, or 015 and be exactly 11 digits long.",
       "string.empty": "Phone number is required.",
       "any.required": "Phone number is required.",
     }),
@@ -87,12 +84,7 @@ const editUniversityValidation = Joi.object({
         "Email must be a valid email address with .com or .net domain.",
     }),
   phone: Joi.string()
-    .pattern(/^(010|011|012|015)\d{8}$/)
-    .optional()
-    .messages({
-      "string.pattern.base":
-        "Phone number must start with 010, 011, 012, or 015 and be exactly 11 digits long.",
-    }),
+    .optional(),
   pageUrl: Joi.string().uri().optional().messages({
     "string.uri": "Page URL must be a valid URL.",
   }),

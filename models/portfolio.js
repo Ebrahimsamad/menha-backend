@@ -86,11 +86,7 @@ const portfolioSchema = new Schema(
   },
   {
     timestamps: true,
-    toJSON: {
-      transform(doc, ret) {
-        delete ret.dateOfBirthDate;
-      },
-    },
+    
   }
 );
 
