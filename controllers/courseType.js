@@ -1,5 +1,7 @@
 const CourseType = require("../models/courseType");
 const CustomError = require("../utils/customError");
+const Scholarship = require("../models/scholarship");
+const Portfolio = require("../models/portfolio");
 
 const createCourseType = async (req, res, next) => {
   try {
@@ -39,6 +41,9 @@ const deleteCourseTypeById = async (req, res, next) => {
     if (!deletedCourseType) {
       return next(new CustomError("Course Type not found.", 404));
     }
+    await Scholarship.deleteMany({ courseTypeId: id });
+
+    await Portfolio.deleteMany({ courseTypeId: id });
 
     res.status(200).json({
       message: "Course Type deleted successfully",

@@ -1,5 +1,7 @@
 const ModeOfStudy = require("../models/modeOfStudy");
 const CustomError = require("../utils/customError");
+const Scholarship = require("../models/scholarship");
+const Portfolio = require("../models/portfolio");
 
 const createModeOfStudy = async (req, res, next) => {
   try {
@@ -39,6 +41,9 @@ const deleteModeOfStudyById = async (req, res, next) => {
     if (!deletedModeOfStudy) {
       return next(new CustomError("Mode of Study not found.", 404));
     }
+    await Scholarship.deleteMany({ modeOfStudyId: id });
+
+    await Portfolio.deleteMany({ modeOfStudyId: id });
 
     res.status(200).json({
       message: "Mode of Study deleted successfully",

@@ -44,6 +44,9 @@ const userSchema = new Schema(
     isGetFreePlan:{
       type: Boolean,
       default: false,
+    },
+    selectedPlan:{
+      type:String,
     }
   },
   {

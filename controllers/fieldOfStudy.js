@@ -1,5 +1,7 @@
 const FieldOfStudy = require("../models/fieldOfStudy");
 const CustomError = require("../utils/customError");
+const Scholarship = require("../models/scholarship");
+const Portfolio = require("../models/portfolio");
 
 const createFieldOfStudy = async (req, res, next) => {
   try {
@@ -39,6 +41,9 @@ const deleteFieldOfStudyById = async (req, res, next) => {
     if (!deletedFieldOfStudy) {
       return next(new CustomError("Field of Study not found.", 404));
     }
+    await Scholarship.deleteMany({ fieldOfStudyId: id });
+
+    await Portfolio.deleteMany({ fieldOfStudyId: id });
 
     res.status(200).json({
       message: "Field of Study deleted successfully",

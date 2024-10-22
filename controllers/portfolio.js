@@ -3,8 +3,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const User = require("../models/user");
 const transporter = require("../utils/nodemialer");
 const CustomError = require("../utils/customError");
+const portfolioMatchingWithScholarships= require("../utils/portfolioMatchingWithScholarships")
+const Scholarship = require("../models/scholarship");
+const MatchingPercentage= require("../models/portfolioMatchingWithScholarships")
 
-// CREATE a portfolio
 exports.createPortfolio = async (req, res, next) => {
   try {
     const user = req.user;
@@ -26,7 +28,6 @@ exports.createPortfolio = async (req, res, next) => {
   }
 };
 
-// READ all portfolios
 exports.getAllPortfolios = async (req, res, next) => {
   const { isAccept, isReject } = req.query;
 
@@ -52,7 +53,6 @@ exports.getAllPortfolios = async (req, res, next) => {
   }
 };
 
-// READ a single portfolio by ID
 exports.getPortfolioById = async (req, res, next) => {
   try {
     const portfolio = await Portfolio.findById(req.params.id)
@@ -88,7 +88,6 @@ exports.getUserProfile = async (req, res, next) => {
   }
 };
 
-// UPDATE a portfolio
 exports.updatePortfolio = async (req, res, next) => {
   const user = req.user;
 
@@ -122,6 +121,7 @@ exports.updatePortfolio = async (req, res, next) => {
       .populate("modeOfStudyId")
       .populate("languageId")
       .populate("userID");
+    const deletePortfolioPercentage = await MatchingPercentage.findOneAndDelete({portfolioId:updatedPortfolio._id})
 
     res.status(200).send({
       message: "your portfolio updated successfully",
@@ -132,13 +132,13 @@ exports.updatePortfolio = async (req, res, next) => {
   }
 };
 
-// DELETE a portfolio
 exports.deletePortfolio = async (req, res, next) => {
   try {
     const deletedPortfolio = await Portfolio.findByIdAndDelete(req.params.id);
     if (!deletedPortfolio) {
       return next(new CustomError("Portfolio not found", 404));
     }
+    const deletePortfolioPercentage = await MatchingPercentage.findOneAndDelete({portfolioId:deletedPortfolio._id})
     res.status(200).json({ message: "Portfolio deleted successfully" });
   } catch (error) {
     next(new CustomError(error.message, 500));
@@ -156,7 +156,7 @@ exports.getFreePlan = async (req, res, next) => {
     expDate.setMonth(currentDate.getMonth() + 1);
     const newUser = await User.findByIdAndUpdate(
       user.id,
-      { isBuyPortfolio: true, expBuyPortfolio: expDate, isGetFreePlan: true },
+      { isBuyPortfolio: true, expBuyPortfolio: expDate, isGetFreePlan: true ,selectedPlan:"1 month"},
       { new: true }
     );
     res.status(200).send({ message: "Success", newUser });
@@ -207,7 +207,7 @@ exports.completePayment = async (req, res, next) => {
   try {
     const user = await User.findByIdAndUpdate(
       userID,
-      { isBuyPortfolio: true, expBuyPortfolio: expDate },
+      { isBuyPortfolio: true, expBuyPortfolio: expDate ,selectedPlan: date},
       { new: true }
     );
 
@@ -337,7 +337,16 @@ exports.acceptProtfolio = async (req, res, next) => {
     };
 
     await transporter.sendMail(mailOptions);
-
+    const Scholarships= await Scholarship.find();
+    const matchingPercentage=Scholarships.map((scholarship)=>{
+      const Percentage=portfolioMatchingWithScholarships(portfolio,scholarship)
+      return {
+        scholarshipId:scholarship._id,
+        percentage:Percentage
+      }
+    })
+    const portfolioPercentage=new MatchingPercentage({portfolioId:portfolio._id,userId:portfolio.userID._id,matchingPercentage:matchingPercentage})
+    portfolioPercentage.save()
     res
       .status(200)
       .send({ message: "Portfolio accepted successfully", portfolio });
