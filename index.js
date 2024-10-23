@@ -18,6 +18,7 @@ const contactUsRouter = require("./routes/contact-us");
 const men7aImpactRoute=require("./routes/men7aImpact");
 const savedScholarshipRoute = require("./routes/savedScholarships");
 const portfolioRoute = require("./routes/portfolio");
+const MatchingPercentageRoute=require("./routes/MatchingPercentage")
 const PORT = 3000;
 const app = express();
 app.use(express.json());
@@ -38,6 +39,7 @@ app.use("/contact-us", contactUsRouter);
 app.use("/men7a-impact",men7aImpactRoute)
 app.use("/saved-scholarship",savedScholarshipRoute)
 app.use("/portfolio", portfolioRoute)
+app.use("/matching-percentage",MatchingPercentageRoute)
 app.use((req, res, next) => {
   logsFunction.error(
     `${req.method} ${

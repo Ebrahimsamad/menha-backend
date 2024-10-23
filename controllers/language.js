@@ -1,5 +1,7 @@
 const Language = require("../models/langauge");
 const CustomError = require("../utils/customError");
+const Scholarship = require("../models/scholarship");
+const Portfolio = require("../models/portfolio");
 
 const createLanguage = async (req, res, next) => {
   try {
@@ -38,6 +40,9 @@ const deleteLanguageById = async (req, res, next) => {
     if (!deletedLanguage) {
       return next(new CustomError("Language not found.", 404));
     }
+    await Scholarship.deleteMany({ languageId: id });
+
+    await Portfolio.deleteMany({ languageId: id });
 
     res
       .status(200)
