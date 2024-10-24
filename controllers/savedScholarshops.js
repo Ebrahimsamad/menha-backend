@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Scholarship = require("../models/scholarship");
 const CustomError = require("../utils/customError");
+const MatchingPercentage = require("../models/portfolioMatchingWithScholarships");
 
 exports.toggleSavedScholarship = async (req, res, next) => {
   try {
@@ -75,18 +76,47 @@ exports.getSavedScholarships = async (req, res,next) => {
     const totalPages = Math.ceil(totalScholarships / limit);
 
     const validScholarships = user.savedScholarshipIds;
-
-    res.status(200).json({
-      pagination: {
-        totalItems: totalScholarships,
-        totalPages,
-        currentPage: page,
-        pageSize: limit,
-        hasNextPage: page < totalPages,
-        hasPreviousPage: page > 1,
-      },
-      scholarships: validScholarships,
+    const currentDate = new Date();
+    const userBuydate = new Date(user.expBuyPortfolio);
+    const matchingPercentageUser = await MatchingPercentage.findOne({
+      userId: user.id,
     });
+    if (userBuydate < currentDate || !matchingPercentageUser) {
+      res.status(200).json({
+        pagination: {
+          totalItems: totalScholarships,
+          totalPages,
+          currentPage: page,
+          pageSize: limit,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1,
+        },
+        scholarships: validScholarships,
+      });
+    }else{
+      const scholarshipsWithPercentage = validScholarships.map((scholarship) => {
+        const percentage = matchingPercentageUser.matchingPercentage.find(
+          (match) =>
+            match.scholarshipId.toString() === scholarship._id.toString()
+        ).percentage;
+
+        return {
+          percentage,
+          ...scholarship.toObject()
+        };
+      });
+      res.status(200).json({
+        pagination: {
+          totalItems: totalScholarships,
+          totalPages,
+          currentPage: page,
+          pageSize: limit,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1,
+        },
+        scholarships: scholarshipsWithPercentage,
+      });
+    }
   } catch (error) {
     next(new CustomError("Internal server error.", 500));
   }
