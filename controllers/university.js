@@ -10,6 +10,31 @@ const getAllUniversity = async (req, res, next) => {
     next(new CustomError("Error fetching universities", 500));
   }
 };
+const getAllUniversityWithPagination = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const universities = await University.find().skip(skip).limit(limit);
+    const total = await University.countDocuments();
+    const totalPages = Math.ceil(total / limit);
+
+    res.status(200).json({
+      universities,
+      pagination: {
+        totalItems: total,
+        totalPages: totalPages,
+        currentPage: page,
+        pageSize: limit,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    });
+  } catch (error) {
+    next(new CustomError("Error fetching universities", 500));
+  }
+};
 
 const getUniversityById = async (req, res, next) => {
   const id = req.params.id;
@@ -112,4 +137,5 @@ module.exports = {
   getAllUniversity,
   getUniversityById,
   deleteUniversity,
+  getAllUniversityWithPagination
 };

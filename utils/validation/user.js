@@ -43,9 +43,7 @@ const createUser = Joi.object({
         "string.pattern.base": "Invalid image type",
       }),
   })
-    .required()
     .messages({
-      "any.required": "Image is required.",
       "object.base": "Image must be an object",
     }),
 });

@@ -5,6 +5,7 @@ const {
   getAllUniversity,
   getUniversityById,
   deleteUniversity,
+  getAllUniversityWithPagination
 } = require("../controllers/university");
 const multer = require("multer");
 const upload = multer();
@@ -19,6 +20,8 @@ const isAdminCheck = require("../middleware/adminRoleCheck");
 const auth = require("../middleware/auth");
 
 router.get("/", getAllUniversity);
+
+router.get("/pagination", getAllUniversityWithPagination);
 
 router.get("/:id", getUniversityById);
 
