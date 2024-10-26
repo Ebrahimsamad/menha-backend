@@ -52,8 +52,38 @@ const deleteLanguageById = async (req, res, next) => {
   }
 };
 
+const editLanguageById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, course } = req.body;
+
+    const existingLanguage = await Language.findOne({ name });
+    if (existingLanguage && existingLanguage._id.toString() !== id) {
+      return next(new CustomError("Language with this name already exists.", 409));
+    }
+
+    const updatedLanguage = await Language.findByIdAndUpdate(
+      id,
+      { name, course },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedLanguage) {
+      return next(new CustomError("Language not found.", 404));
+    }
+
+    res.status(200).json({
+      message: "Language updated successfully",
+      updatedLanguage,
+    });
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
+
 module.exports = {
   createLanguage,
   getAllLanguages,
   deleteLanguageById,
+  editLanguageById, 
 };

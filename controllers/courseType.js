@@ -54,8 +54,38 @@ const deleteCourseTypeById = async (req, res, next) => {
   }
 };
 
+const editCourseTypeById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { courseType } = req.body;
+
+    const existingCourseType = await CourseType.findOne({ courseType });
+    if (existingCourseType && existingCourseType._id.toString() !== id) {
+      return next(new CustomError("Course Type with this name already exists.", 409));
+    }
+
+    const updatedCourseType = await CourseType.findByIdAndUpdate(
+      id,
+      { courseType },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCourseType) {
+      return next(new CustomError("Course Type not found.", 404));
+    }
+
+    res.status(200).json({
+      message: "Course Type updated successfully",
+      updatedCourseType,
+    });
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
+
 module.exports = {
   createCourseType,
   getAllCourseTypes,
   deleteCourseTypeById,
+  editCourseTypeById, 
 };

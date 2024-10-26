@@ -4,9 +4,10 @@ const {
   createLanguage,
   getAllLanguages,
   deleteLanguageById,
+  editLanguageById
 } = require("../controllers/language");
 const validation = require("../middleware/JoiValidation");
-const { languageValidationCreate } = require("../utils/validation/language");
+const { languageValidationCreate,languageValidationEdit } = require("../utils/validation/language");
 const isAdminCheck = require("../middleware/adminRoleCheck");
 const auth = require("../middleware/auth");
 
@@ -19,6 +20,9 @@ router.post(
 );
 
 router.get("/", getAllLanguages);
+
+
+router.patch("/:id", auth, isAdminCheck(true), validation(languageValidationEdit), editLanguageById);
 
 router.delete("/:id", auth, isAdminCheck(true), deleteLanguageById);
 

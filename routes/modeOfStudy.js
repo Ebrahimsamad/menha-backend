@@ -4,6 +4,7 @@ const {
   createModeOfStudy,
   getAllModesOfStudy,
   deleteModeOfStudyById,
+  editModeOfStudyById
 } = require("../controllers/modeOfStudy");
 const validation = require("../middleware/JoiValidation");
 const { modeofstudyvaldate } = require("../utils/validation/modeOfStudy");
@@ -19,6 +20,8 @@ router.post(
 );
 
 router.get("/", getAllModesOfStudy);
+
+router.patch("/:id", auth, isAdminCheck(true), validation(modeofstudyvaldate), editModeOfStudyById);
 
 router.delete("/:id", auth, isAdminCheck(true), deleteModeOfStudyById);
 

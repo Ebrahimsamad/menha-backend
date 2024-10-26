@@ -11,6 +11,7 @@ const {
   createFieldOfStudy,
   getAllFieldsOfStudy,
   deleteFieldOfStudyById,
+  editFieldOfStudyById
 } = require("../controllers/fieldOfStudy");
 
 router.post(
@@ -22,6 +23,9 @@ router.post(
 );
 
 router.get("/", getAllFieldsOfStudy);
+
+
+router.patch("/:id", auth, isAdminCheck(true), validation(createFieldOfStudyValidation), editFieldOfStudyById);
 
 router.delete("/:id", auth, isAdminCheck(true), deleteFieldOfStudyById);
 
