@@ -54,8 +54,38 @@ const deleteFieldOfStudyById = async (req, res, next) => {
   }
 };
 
+const editFieldOfStudyById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { fieldOfStudy } = req.body;
+
+    const existingFieldOfStudy = await FieldOfStudy.findOne({ fieldOfStudy });
+    if (existingFieldOfStudy && existingFieldOfStudy._id.toString() !== id) {
+      return next(new CustomError("Field of Study with this name already exists.", 409));
+    }
+
+    const updatedFieldOfStudy = await FieldOfStudy.findByIdAndUpdate(
+      id,
+      { fieldOfStudy },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedFieldOfStudy) {
+      return next(new CustomError("Field of Study not found.", 404));
+    }
+
+    res.status(200).json({
+      message: "Field of Study updated successfully",
+      updatedFieldOfStudy,
+    });
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
+
 module.exports = {
   createFieldOfStudy,
   getAllFieldsOfStudy,
   deleteFieldOfStudyById,
+  editFieldOfStudyById, 
 };

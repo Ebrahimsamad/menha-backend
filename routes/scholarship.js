@@ -6,7 +6,8 @@ const {
   getScholarshipById,
   deleteScholarship,
   getAllScholarships,
-  getAllScholarshipsWithPercentage
+  getAllScholarshipsWithPercentage,
+  getScholarshipByIdWithPercentage
 } = require("../controllers/scholarship");
 const validation = require("../middleware/JoiValidation");
 const {
@@ -37,6 +38,8 @@ router.get("/", getAllScholarships);
 router.get("/percentage",auth, getAllScholarshipsWithPercentage);
 
 router.get("/:id", getScholarshipById);
+
+router.get("/percentage/:id", auth, getScholarshipByIdWithPercentage);
 
 router.delete("/:id", auth, isAdminCheck(true), deleteScholarship);
 

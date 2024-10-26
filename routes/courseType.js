@@ -11,6 +11,7 @@ const {
   createCourseType,
   getAllCourseTypes,
   deleteCourseTypeById,
+  editCourseTypeById
 } = require("../controllers/courseType");
 
 router.post(
@@ -22,6 +23,8 @@ router.post(
 );
 
 router.get("/", getAllCourseTypes);
+
+router.patch("/:id", auth, isAdminCheck(true), validation(createCourseTypeValidation), editCourseTypeById);
 
 router.delete("/:id", auth, isAdminCheck(true), deleteCourseTypeById);
 

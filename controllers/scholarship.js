@@ -7,6 +7,7 @@ const CustomError = require("../utils/customError");
 const portfolioMatchingWithScholarships = require("../utils/portfolioMatchingWithScholarships");
 const MatchingPercentage = require("../models/portfolioMatchingWithScholarships");
 const transporter = require("../utils/nodemialer");
+const User = require("../models/user");
 
 const sendEmail = async (userEmail, scholarship, scholarshipPercentage) => {
   templet1 = `<!DOCTYPE html>
@@ -509,7 +510,10 @@ exports.deleteScholarship = async (req, res, next) => {
       { "matchingPercentage.scholarshipId": scholarship._id },
       { $pull: { matchingPercentage: { scholarshipId: scholarship._id } } }
     );
-
+    await User.updateMany(
+      { "savedScholarships.scholarshipId": scholarship._id },
+      { $pull: { savedScholarships: { scholarshipId: scholarship._id } } }
+    );
     res
       .status(200)
       .json({
@@ -686,3 +690,45 @@ exports.getAllScholarshipsWithPercentage = async (req, res, next) => {
     next(new CustomError("Internal server error.", 500));
   }
 };
+
+exports.getScholarshipByIdWithPercentage = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const scholarship = await Scholarship.findById(id)
+      .populate("fieldOfStudyId")
+      .populate("courseTypeId")
+      .populate("universityId")
+      .populate("languageId")
+      .populate("modeOfStudyId");
+    
+    if (!scholarship) {
+      return next(new CustomError("Scholarship not found", 404));
+    }
+
+    const user = req.user;
+    const currentDate = new Date();
+    const userBuyDate = new Date(user.expBuyPortfolio);
+    const matchingPercentageUser = await MatchingPercentage.findOne({
+      userId: user.id,
+    });
+
+    if (userBuyDate < currentDate || !matchingPercentageUser) {
+      return res.status(200).json({ scholarship });
+    } else {
+      const match = matchingPercentageUser.matchingPercentage.find(
+        (match) => match.scholarshipId.toString() === scholarship._id.toString()
+      );
+
+      const scholarshipWithPercentage = {
+        ...scholarship.toObject(),
+        percentage: match ? match.percentage : null
+      };
+
+      res.status(200).json({ scholarship: scholarshipWithPercentage });
+    }
+  } catch (error) {
+    next(new CustomError("Internal server error.", 500));
+  }
+};
+
