@@ -196,9 +196,9 @@ exports.completePayment = async (req, res, next) => {
   const expDate = new Date(currentDate);
 
   const planDurations = {
-    "1 month": 1,
-    "3 month": 3,
-    "6 month": 6,
+    "1 Month": 1,
+    "3 Month": 3,
+    "6 Month": 6,
   };
 
   if (planDurations[date]) {
