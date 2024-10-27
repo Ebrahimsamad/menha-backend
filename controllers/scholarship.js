@@ -730,49 +730,6 @@ exports.getScholarshipByIdWithPercentage = async (req, res, next) => {
   }
 };
 
-// exports.searchScholarships = async (req, res, next) => {
-//   try {
-//     const { title, university } = req.query;
-//     const page = parseInt(req.query.page, 10) || 1;
-//     const size = parseInt(req.query.size, 10) || 10;
-
-//     // Build the search query dynamically based on provided filters
-//     const match = {};
-
-//     // Add title search if provided
-//     if (title) {
-//       match.title = { $regex: title, $options: "i" }; // Case-insensitive title search
-//     }
-
-//     // Fetch scholarships and populate university details
-//     const scholarships = await Scholarship.find(match)
-//       .populate({
-//         path: "universityId", // This should match the field in Scholarship schema
-//         model: "University", // Ensure this matches the actual model name for universities
-//         select: "name", // Select only the university name
-//       })
-//       .skip((page - 1) * size)
-//       .limit(size);
-
-//     // Total scholarships count for pagination
-//     const totalScholarships = await Scholarship.countDocuments(match);
-//     const totalPages = Math.ceil(totalScholarships / size);
-
-//     // Respond with scholarships and pagination info
-//     res.status(200).json({
-//       scholarships,
-//       pagination: {
-//         currentPage: page,
-//         totalPages,
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Error in searchScholarships:", error);
-//     res
-//       .status(500)
-//       .json({ message: "An error occurred while processing your request." });
-//   }
-// };
 exports.searchScholarships = async (req, res, next) => {
   try {
     const { title, university } = req.query;
@@ -796,12 +753,10 @@ exports.searchScholarships = async (req, res, next) => {
         match.universityId = match.universityId._id; // Use the university ID in the match object
       } else {
         // If no university is found, return empty results
-        return res
-          .status(200)
-          .json({
-            scholarships: [],
-            pagination: { currentPage: page, totalPages: 0 },
-          });
+        return res.status(200).json({
+          scholarships: [],
+          pagination: { currentPage: page, totalPages: 0 },
+        });
       }
     }
 
