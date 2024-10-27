@@ -191,35 +191,41 @@ exports.buyPortfolio = async (req, res, next) => {
   }
 };
 exports.completePayment = async (req, res, next) => {
-  const userID = req.query.id;
-  const date = req.query.date;
-  let currentDate = new Date();
-  let expDate = new Date(currentDate);
+  const { id: userID, date, session_id } = req.query;
+  const currentDate = new Date();
+  const expDate = new Date(currentDate);
 
-  if (date === "1 month") {
-    expDate.setMonth(currentDate.getMonth() + 1);
-  } else if (date === "3 month") {
-    expDate.setMonth(currentDate.getMonth() + 3);
-  } else if (date === "6 month") {
-    expDate.setMonth(currentDate.getMonth() + 6);
+  const planDurations = {
+    "1 month": 1,
+    "3 month": 3,
+    "6 month": 6,
+  };
+
+  if (planDurations[date]) {
+    expDate.setMonth(currentDate.getMonth() + planDurations[date]);
+  } else {
+    return next(new CustomError("Invalid plan duration", 400));
   }
 
   try {
     const user = await User.findByIdAndUpdate(
       userID,
-      { isBuyPortfolio: true, expBuyPortfolio: expDate ,selectedPlan: date},
+      { 
+        isBuyPortfolio: true, 
+        expBuyPortfolio: expDate, 
+        selectedPlan: date 
+      },
       { new: true }
     );
 
-    const session_id = req.query.session_id;
-
     res.redirect(
-      `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&expBuyPortfolio=${expDate}`
+      `${process.env.SUCCESS_PAGE_URL}?isBuyPortfolio=${user.isBuyPortfolio}&expBuyPortfolio=${user.expBuyPortfolio.toISOString()}`
     );
   } catch (error) {
     next(new CustomError(error.message, 500));
   }
 };
+
 exports.cancel = (req, res) => {
   res.render(`${process.env.PRICING_PAGE_URL}`);
 };
