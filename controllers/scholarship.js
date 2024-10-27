@@ -514,11 +514,9 @@ exports.deleteScholarship = async (req, res, next) => {
       { "savedScholarships.scholarshipId": scholarship._id },
       { $pull: { savedScholarships: { scholarshipId: scholarship._id } } }
     );
-    res
-      .status(200)
-      .json({
-        message: "Scholarship and associated percentages deleted successfully",
-      });
+    res.status(200).json({
+      message: "Scholarship and associated percentages deleted successfully",
+    });
   } catch (error) {
     next(new CustomError(error.message, 500));
   }
@@ -671,7 +669,7 @@ exports.getAllScholarshipsWithPercentage = async (req, res, next) => {
 
         return {
           percentage,
-          ...scholarship.toObject()
+          ...scholarship.toObject(),
         };
       });
       res.status(200).json({
@@ -701,7 +699,7 @@ exports.getScholarshipByIdWithPercentage = async (req, res, next) => {
       .populate("universityId")
       .populate("languageId")
       .populate("modeOfStudyId");
-    
+
     if (!scholarship) {
       return next(new CustomError("Scholarship not found", 404));
     }
@@ -722,7 +720,7 @@ exports.getScholarshipByIdWithPercentage = async (req, res, next) => {
 
       const scholarshipWithPercentage = {
         ...scholarship.toObject(),
-        percentage: match ? match.percentage : null
+        percentage: match ? match.percentage : null,
       };
 
       res.status(200).json({ scholarship: scholarshipWithPercentage });
@@ -732,3 +730,62 @@ exports.getScholarshipByIdWithPercentage = async (req, res, next) => {
   }
 };
 
+exports.searchScholarships = async (req, res, next) => {
+  try {
+    const { title, university } = req.query;
+    const page = parseInt(req.query.page, 10) || 1;
+    const size = parseInt(req.query.size, 10) || 10;
+
+    // Build the search query dynamically based on provided filters
+    const match = {};
+
+    // Add title search if provided
+    if (title) {
+      match.title = { $regex: title, $options: "i" }; // Case-insensitive title search
+    }
+
+    // Add university search if provided
+    if (university) {
+      match.universityId = await University.findOne({
+        name: { $regex: university, $options: "i" },
+      }).select("_id"); // Find university ID by name
+      if (match.universityId) {
+        match.universityId = match.universityId._id; // Use the university ID in the match object
+      } else {
+        // If no university is found, return empty results
+        return res.status(200).json({
+          scholarships: [],
+          pagination: { currentPage: page, totalPages: 0 },
+        });
+      }
+    }
+
+    // Fetch scholarships and populate university details
+    const scholarships = await Scholarship.find(match)
+      .populate({
+        path: "universityId", // This should match the field in Scholarship schema
+        model: "University", // Ensure this matches the actual model name for universities
+        select: "name", // Select only the university name
+      })
+      .skip((page - 1) * size)
+      .limit(size);
+
+    // Total scholarships count for pagination
+    const totalScholarships = await Scholarship.countDocuments(match);
+    const totalPages = Math.ceil(totalScholarships / size);
+
+    // Respond with scholarships and pagination info
+    res.status(200).json({
+      scholarships,
+      pagination: {
+        currentPage: page,
+        totalPages,
+      },
+    });
+  } catch (error) {
+    console.error("Error in searchScholarships:", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while processing your request." });
+  }
+};

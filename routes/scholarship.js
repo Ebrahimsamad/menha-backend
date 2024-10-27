@@ -7,7 +7,8 @@ const {
   deleteScholarship,
   getAllScholarships,
   getAllScholarshipsWithPercentage,
-  getScholarshipByIdWithPercentage
+  getScholarshipByIdWithPercentage,
+  searchScholarships,
 } = require("../controllers/scholarship");
 const validation = require("../middleware/JoiValidation");
 const {
@@ -33,9 +34,11 @@ router.patch(
   editScholarship
 );
 
+router.get("/search", searchScholarships);
+
 router.get("/", getAllScholarships);
 
-router.get("/percentage",auth, getAllScholarshipsWithPercentage);
+router.get("/percentage", auth, getAllScholarshipsWithPercentage);
 
 router.get("/:id", getScholarshipById);
 
