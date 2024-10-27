@@ -199,6 +199,7 @@ exports.completePayment = async (req, res, next) => {
     "1 Month": 1,
     "3 Month": 3,
     "6 Month": 6,
+
   };
 
   if (planDurations[date]) {
