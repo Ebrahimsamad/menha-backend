@@ -732,9 +732,10 @@ exports.getScholarshipByIdWithPercentage = async (req, res, next) => {
 
 exports.searchScholarships = async (req, res, next) => {
   try {
-    const { title, university } = req.query;
-    const page = parseInt(req.query.page, 10) || 1;
-    const size = parseInt(req.query.size, 10) || 10;
+    const { title, university, page = 1, size = 10 } = req.query;
+    const limit = parseInt(size, 10);
+    const currentPage = parseInt(page, 10);
+    const skip = (currentPage - 1) * limit;
 
     // Build the search query dynamically based on provided filters
     const match = {};
@@ -746,46 +747,52 @@ exports.searchScholarships = async (req, res, next) => {
 
     // Add university search if provided
     if (university) {
-      match.universityId = await University.findOne({
+      const universityData = await University.findOne({
         name: { $regex: university, $options: "i" },
-      }).select("_id"); // Find university ID by name
-      if (match.universityId) {
-        match.universityId = match.universityId._id; // Use the university ID in the match object
+      }).select("_id");
+
+      // Check if the university was found
+      if (universityData) {
+        match.universityId = universityData._id; // Use the university ID in the match object
       } else {
         // If no university is found, return empty results
         return res.status(200).json({
           scholarships: [],
-          pagination: { currentPage: page, totalPages: 0 },
+          pagination: { currentPage, totalPages: 0 },
         });
       }
     }
 
-    // Fetch scholarships and populate university details
+    // Fetch scholarships and populate all related data
     const scholarships = await Scholarship.find(match)
-      .populate({
-        path: "universityId", // This should match the field in Scholarship schema
-        model: "University", // Ensure this matches the actual model name for universities
-        select: "name", // Select only the university name
-      })
-      .skip((page - 1) * size)
-      .limit(size);
+      .populate("fieldOfStudyId") // Populate field of study
+      .populate("courseTypeId") // Populate course type
+      .populate("modeOfStudyId") // Populate mode of study
+      .populate("universityId", "name") // Populate university name
+      .populate("languageId") // Populate language
+      .sort({ createdAt: -1 }) // Sort by creation date, or other criteria as needed
+      .skip(skip)
+      .limit(limit);
 
     // Total scholarships count for pagination
     const totalScholarships = await Scholarship.countDocuments(match);
-    const totalPages = Math.ceil(totalScholarships / size);
+    const totalPages = Math.ceil(totalScholarships / limit);
 
     // Respond with scholarships and pagination info
     res.status(200).json({
       scholarships,
       pagination: {
-        currentPage: page,
+        currentPage,
         totalPages,
+        totalItems: totalScholarships,
+        hasNextPage: currentPage < totalPages,
+        hasPreviousPage: currentPage > 1,
       },
     });
   } catch (error) {
     console.error("Error in searchScholarships:", error);
-    res
-      .status(500)
-      .json({ message: "An error occurred while processing your request." });
+    next(
+      new CustomError("An error occurred while processing your request.", 500)
+    );
   }
 };
