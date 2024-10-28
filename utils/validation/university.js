@@ -77,7 +77,6 @@ const editUniversityValidation = Joi.object({
     "string.base": "Faculty name must be a string.",
   }),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .optional()
     .messages({
       "string.email":
